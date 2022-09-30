@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+    <style>
+
+        #stil{
+            background-repeat: no-repeat;
+            width: 100%;
+        }
+
+    </style>
+
+
+</head>
+<body id="stil" style="background-image: url('https://wallpaperaccess.com/full/225325.jpg')">
+<nav style="background-color: black">
+    <div class="container">
+        <a class="navbar-brand" href="home.html" style="color: white">BIKE SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white">
+            Navigation
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+            <ul class="navbar-nav m-auto">
+                <li>
+                    <a class="nav-link" href="/home" style="color: white">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="/products" style="color: white">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin" style="color: white">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/payments/charge">Cart <span class="sr-only" style="color: white">(current)</span></a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/logout" style="color: white">Logout</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" sec:authentication="name" style="color: white"></a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login" style="color: white">Login</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div th:if="${param.message}">
+    <h2 class="text-center text-primary" th:text="${param.message}"></h2>
+</div>
+
+<div th:if="${param.error}">
+    <h2 class="text-center text-danger" th:text="${param.error}"></h2>
+</div>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12" th:if="${products.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="color: white">Product</th>
+                        <th scope="col" style="color: white">Available</th>
+                        <th scope="col" style="color: white">Quantity</th>
+                        <th scope="col" style="color: white">Price</th>
+                        <th scope="col" style="color: white">Manufacturer</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${products}">
+                        <td><img th:src="${product.getImageBase64()}"/></td>
+                        <td th:text="${product.getName()}" style="color: white"></td>
+                        <td th:text="${product.getQuantity() > 0 } ? 'In stock' : 'Out of stock'" style="color: white"></td>
+                        <td th:text="${product.getQuantity()}" style="color: white"></td>
+                        <td th:text="${product.getPrice()}" style="color: white"></td>
+                        <td th:text="${product.getManufacturer() != null} ? ${product.getManufacturer().getName()} : 'No Manufacturer'" style="color: white"></td>
+                        <td class="text-right">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <form th:action="@{/products/{id}/delete(id=${product.getId()})}" th:method="delete">
+                                    <button type="submit" style="background-color: red; width: 200px" ><i class="fa fa-trash">Delete</i></button>
+                                </form>
+                            </div>
+                            <form th:action="@{/shopping-carts/{id}/add-product(id=${product.getId()})}" th:method="post">
+                                <button type="submit" style="background-color: green; width: 200px" ><i class="fa fa-trash">Add product to cart</i></button>
+                            </form>
+                            <form th:action="@{/shopping-carts/{id}/remove-product(id=${product.getId()})}" th:method="post">
+                                <button type="submit" style="background-color: red; width: 200px" ><i class="fa fa-trash">Remove product from cart</i></button>
+                            </form>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a th:href="@{/products/{id}/edit(id=${product.getId()})}" class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="/products/add-new" class="btn btn-block btn-light">Add new product</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-black-50">
+
+</footer>
+</body>
+</html>
+
+
+

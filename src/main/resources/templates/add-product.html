@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+</head>
+<body id="stil" style="background-image: url('https://wallpaperaccess.com/full/225325.jpg')">
+<nav style="background-color: black">
+    <div class="container">
+        <a class="navbar-brand" href="index.html" style="color: white">BIKE SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white">
+            Navigation
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+            <ul class="navbar-nav m-auto">
+                <li>
+                    <a class="nav-link active" href="/home" style="color: white">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products" style="color: white">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html" style="color: white">Cart <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/logout" style="color: white">Logout</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" sec:authentication="name" style="color: white"></a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login" style="color: white">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form action="/products"
+                  method="post"
+                  enctype="multipart/form-data"
+                  th:object="${product}">
+                <input type="text" hidden="hidden" name="id" th:value="${product.getId()}">
+                <div class="form-group">
+                    <label for="name" style="color: white">Product name</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${product.getName()}"
+                           id="name"
+                           name="name"
+                           th:field="*{name}"
+                           required
+                           placeholder="Enter product name">
+                </div>
+                <div class="form-group">
+                    <label for="quantity" style="color: white">Quantity</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${product.getQuantity()}"
+                           id="quantity"
+                           th:field="*{quantity}"
+                           name="quantity"
+                           placeholder="Quantity">
+                </div>
+                <div class="form-group">
+                    <h4 class="text-danger"
+                        th:if="${#fields.hasErrors('price')}"
+                        th:errors="*{price}">
+
+                    </h4>
+                    <label for="price" style="color: white">Price</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${product.getPrice()}"
+                           id="price"
+                           th:field="*{price}"
+                           name="price"
+                           placeholder="Price">
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white">Manufacturer</label>
+                    <select th:field="*{manufacturer.id}" class="form-control">
+                        <option
+                                th:selected="${product.getManufacturer() != null && product.getManufacturer().getId() == man.getId()}"
+                                th:each="man : ${manufacturers}"
+                                th:value="${man.getId()}"
+                                th:text="${man.getName()}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="image" style="color: white">Image</label>
+                    <input name="image" id="image" class="form-control" type="file"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/products">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="text-black-50">
+
+</footer>
+</body>
+</html>
+
+
+

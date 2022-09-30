@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+    <style>
+
+        #stil{
+            background-repeat: no-repeat;
+            width: 100%;
+        }
+
+    </style>
+
+
+</head>
+<body id="stil" style="background-image: url('https://wallpaperaccess.com/full/225325.jpg')">
+<nav style="background-color: black">
+    <div class="container">
+        <a class="navbar-brand" href="index.html" style="color: white">BIKE SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white">
+            Navigation
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+            <ul class="navbar-nav m-auto">
+                <li>
+                    <a class="nav-link active" href="/home" style="color: white">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products" style="color: white">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin" style="color: white">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/payments/charge" style="color: white">Cart <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/logout" style="color: white">Logout</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" sec:authentication="name"></a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login" style="color: white">Login</a>
+                </li>
+            </ul>
+
+            <form class="form-inline my-2 my-lg-0">
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- Footer -->
+<footer class="text-black-50">
+
+</footer>
+</body>
+</html>
+
+
+
